@@ -1,3 +1,4 @@
+```
 /src
 ├── /assets                👉 Images, Icons, Fonts
 ├── /components
@@ -50,3 +51,4 @@
 ├── App.jsx
 ├── main.jsx
 └── index.css
+```

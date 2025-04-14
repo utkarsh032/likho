@@ -1,3 +1,4 @@
+```
 /server
 ├── /config
 │   ├── db.js
@@ -32,3 +33,4 @@
 │   └── ...
 ├── /uploads              👉 Local image upload (can be skipped if using Cloudinary)
 ├── server.js
+```

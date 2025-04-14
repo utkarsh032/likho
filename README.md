@@ -1,4 +1,5 @@
-/Blogify-App
+```
+/likho.in
 ├── /client               👉 React Frontend
 │   ├── /public
 │   ├── /src
@@ -34,3 +35,4 @@
 ├── .gitignore
 ├── package.json
 └── README.md
+```
