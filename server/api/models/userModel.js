@@ -3,10 +3,11 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema(
   {
     personal_info: {
-      fullname: {
+      username: {
         type: String,
         required: true,
-        minlength: [3, 'Full name must be at least 3 characters long'],
+        unique: true,
+        minlength: [3, 'Username must be at least 3 characters long'],
       },
       email: {
         type: String,
@@ -16,11 +17,10 @@ const userSchema = new mongoose.Schema(
       password: {
         type: String,
       },
-      username: {
+      fullname: {
         type: String,
         required: true,
-        unique: true,
-        minlength: [3, 'Username must be at least 3 characters long'],
+        minlength: [3, 'Full name must be at least 3 characters long'],
       },
       bio: {
         type: String,
