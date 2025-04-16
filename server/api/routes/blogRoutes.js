@@ -13,5 +13,4 @@ blogRoutes.delete('/delete-blog/:id', authenticateUser, DeleteBlog);
 blogRoutes.get('/get-blog/:id', GetBlogById);
 blogRoutes.get('/all-blogs', GetAllBlogs);
 
-//  Exported routes
 export default blogRoutes;
