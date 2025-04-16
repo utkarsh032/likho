@@ -26,8 +26,6 @@ export const CreateBlog = async (req, res) => {
   }
 }
 
-
-
 // UpdateBlog
 export const UpdateBlog = async (req, res) => {
   try {
@@ -50,7 +48,6 @@ export const UpdateBlog = async (req, res) => {
   }
 };
 
-
 // Delete Blog
 export const DeleteBlog = async (req, res) => {
   try {
@@ -68,7 +65,6 @@ export const DeleteBlog = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error', error: error.message });
   }
 };
-
 
 // Get blog by id
 export const GetBlogById = async (req, res) => {
@@ -88,7 +84,6 @@ export const GetBlogById = async (req, res) => {
   }
 };
 
-
 // Get All Blogs
 export const GetAllBlogs = async (req, res) => {
   try {
@@ -100,3 +95,4 @@ export const GetAllBlogs = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error', error: error.message });
   }
 };
+
