@@ -3,6 +3,7 @@ import express from "express";
 import { MongoDBConnection } from "./config/db.js";
 import { PORT } from './config/env.js'
 import authRoutes from "./api/routes/authRoutes.js";
+import blogRoutes from "./api/routes/blogRoutes.js";
 
 // Init express app
 const app = express()
@@ -17,6 +18,7 @@ app.get('/', (req, res) => {
 
 // authRoutes
 app.use("/api/auth", authRoutes)
+app.use('/api/blogs', blogRoutes);
 
 
 // Server listen

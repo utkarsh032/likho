@@ -8,13 +8,13 @@ const blogSchema = new mongoose.Schema({
   },
 
   title: {
-    en: { type: String, required: true },
-    hi: { type: String }
+    type: String,
+    required: true
   },
 
   blogContent: {
-    en: { type: String, required: true },
-    hi: { type: String }
+    type: String,
+    required: true
   },
 
   tags: [{ type: String }],
@@ -48,7 +48,7 @@ const blogSchema = new mongoose.Schema({
 
   readTime: {
     type: Number,
-    default: 0 // in minutes
+    default: 0
   },
 
   isPublished: {
