@@ -1,16 +1,21 @@
 import './App.css'
-import Navbar from './components/Navbar/Navbar'
 
-import { Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
+import { Login } from './pages/Auth/Login'
+import { Register } from './pages/Auth/Register'
+import { Navbar } from './components/Navbar/Navbar'
 
 function App() {
   return (
-    <>
+    <div className="min-h-screen bg-gray-50">
       <Navbar />
-      <p className='bg-primary-50 font-bold text-2xl'>Likgoad</p>
-      <Routes>
-      </Routes>
-    </>
+      <main className="pt-16">
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Register />} />
+        </Routes>
+      </main>
+    </div>
   )
 }
 
