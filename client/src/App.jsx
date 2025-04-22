@@ -1,11 +1,15 @@
 import './App.css'
+import Navbar from './components/Navbar/Navbar'
+
+import { Routes } from 'react-router-dom'
 
 function App() {
   return (
     <>
-      <div className="bg-primary text-text-white font-primary text-xl rounded-lg shadow-md p-lg">
-        Welcome to <span className="font-bold">Likho.in</span> 🌐📝
-      </div>
+      <Navbar />
+      <p className='bg-primary-50 font-bold text-2xl'>Likgoad</p>
+      <Routes>
+      </Routes>
     </>
   )
 }
