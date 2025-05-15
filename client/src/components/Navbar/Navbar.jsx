@@ -3,13 +3,17 @@ import { useNavigate, NavLink } from 'react-router-dom';
 import { FiSearch, FiEdit, FiBell, FiUser, FiChevronDown, FiMenu, FiX } from 'react-icons/fi';
 import { useClickOutside } from '../../hooks/useClickOutside';
 import Logo from './Logo';
+import { useAuth } from '../../context/AuthContext';
 
 export const Navbar = () => {
+  const { user, signout } = useAuth();
+
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const isAuthenticated = !!user;
 
   const menuRef = useRef(null);
   const profileRef = useRef(null);
@@ -29,9 +33,8 @@ export const Navbar = () => {
     navigate(path);
     setIsMenuOpen(false);
   };
-
   const handleSignOut = () => {
-    setIsAuthenticated(false);
+    signout();
     navigate('/auth');
   };
 
@@ -86,19 +89,19 @@ export const Navbar = () => {
               <div className="relative" ref={profileRef}>
                 <button
                   onClick={toggleProfile}
-                  className="flex items-center space-x-2 border border-gray-200 rounded-md px-2 py-1 hover:border-primary-300 transition-colors duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                  className="flex items-center  space-x-2 border border-gray-200 rounded-md px-2 py-1 hover:border-primary-300 transition-colors duration-200 "
                 >
                   <div className="w-8 h-8 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center">
                     <FiUser size={16} />
                   </div>
-                  <span className="text-sm font-medium">username</span>
+                  <span className="text-sm font-medium">{user?.username || 'User'}</span>
                   <FiChevronDown size={16} className="text-gray-500" />
                 </button>
 
                 {isProfileOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 border border-gray-100 transition-all duration-200 ease-in-out">
                     <div className="px-4 py-2 border-b border-gray-100">
-                      <p className="font-medium text-sm">username@example.com</p>
+                      <p className="font-medium text-sm">{user?.email}</p>
                     </div>
                     <ul>
                       <li>

@@ -5,11 +5,10 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { API } from '../../utils/api';
-
-const saveUserToStorage = (user) => localStorage.setItem('user', JSON.stringify(user));
-const getUserFromStorage = () => JSON.parse(localStorage.getItem('user'));
+import { useAuth } from '../../context/AuthContext';
 
 export const Login = () => {
+  const { signin, user } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
@@ -18,10 +17,12 @@ export const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
+  // Redirect if already logged in
   useEffect(() => {
-    const user = getUserFromStorage();
-    if (user) navigate('/');
-  }, [navigate]);
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
@@ -36,7 +37,8 @@ export const Login = () => {
         withCredentials: true,
       });
 
-      saveUserToStorage(data.user);
+      signin(data.user); // ✅ Corrected this line
+
       toast.success('Successfully signed in!', {
         autoClose: 2000,
         onClose: () => navigate('/')
@@ -53,18 +55,7 @@ export const Login = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
+      <ToastContainer theme="colored" position="top-right" autoClose={3000} />
 
       <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-lg">
         <div className="text-center mb-6">
@@ -133,8 +124,7 @@ export const Login = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full flex items-center justify-center gap-2 py-2 px-4 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition duration-200 ${isLoading ? 'opacity-75 cursor-not-allowed' : ''
-              }`}
+            className={`w-full flex items-center justify-center gap-2 py-2 px-4 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition duration-200 ${isLoading ? 'opacity-75 cursor-not-allowed' : ''}`}
           >
             <FiArrowRight />
             {isLoading ? 'Signing in...' : 'Sign in'}
@@ -142,10 +132,7 @@ export const Login = () => {
 
           {/* Signup Link */}
           <div className="text-center">
-            <Link
-              to="/signup"
-              className="text-sm text-primary-600 hover:text-primary-500 font-medium"
-            >
+            <Link to="/signup" className="text-sm text-primary-600 hover:text-primary-500 font-medium">
               Don't have an account? Sign up
             </Link>
           </div>
