@@ -1,19 +1,28 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { FaEnvelope, FaLock, FaUser, FaArrowRight } from 'react-icons/fa';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import { API } from '../../utils/api';
 
 export const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Handle form submission
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3000/api/auth/signup', {
+      const response = await fetch(`${API}/api/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -24,22 +33,35 @@ export const Register = () => {
       const data = await response.json();
 
       if (response.ok) {
-        console.log('Signup successful:', data);
-        // Optional: Redirect user to login page or dashboard
-        navigate('/login');
+        toast.success('Signup successful! 🎉');
+        setTimeout(() => navigate('/profile'), 2000);
       } else {
-        console.error('Signup failed:', data.message || 'Unknown error');
-        alert(data.message || 'Signup failed');
+        toast.error(data.message || 'Signup failed');
       }
     } catch (error) {
-      console.error('Error during signup:', error);
-      alert('An error occurred. Please try again later.');
+      toast.error('An error occurred. Please try again later.');
+      console.log(error)
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
+        {/* Toast container */}
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
         {/* Header Section */}
         <div className="text-center">
           <h2 className="text-3xl font-bold text-gray-900">Create your account</h2>
@@ -53,13 +75,11 @@ export const Register = () => {
             <div>
               <label htmlFor="username" className="sr-only">Username</label>
               <div className="relative">
-                {/* Username Icon */}
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <FaUser className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
                   id="username"
-                  name="username"
                   type="text"
                   required
                   value={username}
@@ -74,15 +94,12 @@ export const Register = () => {
             <div>
               <label htmlFor="email" className="sr-only">Email address</label>
               <div className="relative">
-                {/* Email Icon */}
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <FaEnvelope className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
                   id="email"
-                  name="email"
                   type="email"
-                  autoComplete="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -96,21 +113,25 @@ export const Register = () => {
             <div>
               <label htmlFor="password" className="sr-only">Password</label>
               <div className="relative">
-                {/* Password Icon */}
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <FaLock className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
                   id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="new-password"
+                  type={showPassword ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none relative block w-full pl-10 pr-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                  className="appearance-none relative block w-full pl-10 pr-10 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                   placeholder="Password"
+                  disabled={isLoading}
                 />
+                <div
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? <FiEyeOff className="h-5 w-5 text-gray-400" /> : <FiEye className="h-5 w-5 text-gray-400" />}
+                </div>
               </div>
             </div>
           </div>
@@ -119,13 +140,13 @@ export const Register = () => {
           <div>
             <button
               type="submit"
+              disabled={isLoading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200"
             >
-              {/* Arrow Icon */}
               <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
                 <FaArrowRight className="h-5 w-5 text-primary-300 group-hover:text-primary-200 transition-colors duration-200" />
               </span>
-              Create account
+              {isLoading ? 'Creating Account...' : 'Create account'}
             </button>
           </div>
 
@@ -143,4 +164,3 @@ export const Register = () => {
     </div>
   );
 };
-
